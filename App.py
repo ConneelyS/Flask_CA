@@ -52,7 +52,7 @@ def home():
 # def games():
 #     list_of_games = get_database()
 #     return str(list_of_games)
-    # return render_template('games_list.html')
+#     return render_template('games_list.html')
 
 @app.route('/new_game_added')
 def game_added():
@@ -64,6 +64,7 @@ def game_added():
 
 @app.route('/add_new_game', methods=['POST', 'GET'])
 def add():
+    message = "message"
     if request.method == 'POST':
         try:
             name = request.form['new_game_name']
@@ -79,11 +80,20 @@ def add():
                 message = "New Game Added Successfully"
         except:
             connection.rollback()
-            message = "Failed Insertion, Rollback Complete"
+            message = "Insert Statement Failed, Rollback Complete"
         finally:
             connection.close()
             return render_template('add_new_game.html.', message = message)
-    #return render_template('add_new_game.html.', message = message)
+    return render_template('add_new_game.html.', message = message)
+
+@app.route('/view_games')
+def view_all_games():
+    connection = sqlite3.connect("database.db")
+    connection.row_factory = sqlite3.Row
+    cursor = connection.cursor()
+    cursor.execute("SELECT * FROM Games")
+    rows = cursor.fetchall()
+    return render_template('games_list.html', rows = rows)
 
 # @app.route('/test_view_games')
 # def test_view_games():
