@@ -48,10 +48,10 @@ app = Flask(__name__)
 def home():
     return render_template('home.html')
 
-@app.route('/games')
-def games():
-    list_of_games = get_database()
-    return str(list_of_games)
+# @app.route('/games')
+# def games():
+#     list_of_games = get_database()
+#     return str(list_of_games)
     # return render_template('games_list.html')
 
 @app.route('/new_game_added')
@@ -62,50 +62,53 @@ def game_added():
 # def login():
 #     return render_template('login.html')
 
-@app.route('/add_new_game')
+@app.route('/add_new_game', methods=['POST', 'GET'])
 def add():
-    message = "message"
     if request.method == 'POST':
-        name = request.form['new_game_name']
-        release_year = request.form['release_year']
-        age_rating = request.form['age_rating']
-        score = request.form['score_rating']
-        developer = request.form['developer']
-        description = request.form['description']
-        with sqlite3.connect("database.db") as connection:
-            cursor = connection.cursor()
-            cursor.execute("INSERT INTO Games (name, release_year, age_rating, score, developer) VALUES (?,?,?,?,?,?)", (name, release_year, age_rating, score, developer, description))
-            connection.commit()
-            message = "New Game Added Successfully"
+        try:
+            name = request.form['new_game_name']
+            release_year = request.form['release_year']
+            age_rating = request.form['age_rating']
+            score = request.form['score_rating']
+            developer = request.form['developer']
+            description = request.form['description']
+            with sqlite3.connect("database.db") as connection:
+                cursor = connection.cursor()
+                cursor.execute("INSERT INTO Games (name, release_year, age_rating, score, developer, description) VALUES (?,?,?,?,?,?)", (name, release_year, age_rating, score, developer, description))
+                connection.commit()
+                message = "New Game Added Successfully"
+        except:
+            connection.rollback()
+            message = "Failed Insertion, Rollback Complete"
+        finally:
+            connection.close()
+            return render_template('add_new_game.html.', message = message)
+    #return render_template('add_new_game.html.', message = message)
 
-        return render_template('add_new_game.html.', message = message)
-        connection.close()
+# @app.route('/test_view_games')
+# def test_view_games():
+#     connection = sqlite3.connect("database.db")
+#     connection.row_factory = sqlite3.Row
+#     cur = connection.cursor()
+#     cur.execute("SELECT * FROM Games")
+#     rows = cur.fetchall()
+#     return render_template("test_view_games.html", rows = rows)
 
 
-@app.route('/test_view_games')
-def test_view_games():
-    connection = sqlite3.connect("database.db")
-    connection.row_factory = sqlite3.Row
-    cur = connection.cursor()
-    cur.execute("SELECT * FROM Games")
-    rows = cur.fetchall()
-    return render_template("test_view_games.html", rows = rows)
+# def get_database():
+#     database = getattr(g, 'database', None)
+#     # if database is None:
+#     database = g.database = sqlite3.connect('database.db')
+#     cursor = database.cursor()
+#     cursor.execute("SELECT * FROM Games")
+#     all_games = cursor.fetchall()
+#     return all_games
 
-
-def get_database():
-    database = getattr(g, 'database', None)
-    # if database is None:
-    database = g.database = sqlite3.connect('database.db')
-    cursor = database.cursor()
-    cursor.execute("SELECT * FROM Games")
-    all_games = cursor.fetchall()
-    return all_games
-
-@app.teardown_appcontext
-def close_connection(exception):
-    database = getattr(g, 'database', None)
-    if database is not None:
-        database.close()
+# @app.teardown_appcontext
+# def close_connection(exception):
+#     database = getattr(g, 'database', None)
+#     if database is not None:
+#         database.close()
 
 if __name__ == '__main__':
     app.run(debug = True)
