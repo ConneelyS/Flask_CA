@@ -1,8 +1,10 @@
-from flask import render_template, request, g
+from flask import render_template, url_for, request, g
 from game_store import app
-from game_store.Models import User, Game
+from game_store.forms import RegistrationForm, LoginForm
+from game_store.models import User, Game
 
 @app.route('/')
+@app.route('/home')
 def home():
     return render_template('home.html')
 
@@ -10,9 +12,15 @@ def home():
 def game_added():
     return render_template('new_game_added.html')
 
-# @app.route('/login')
-# def login():
-#     return render_template('login.html')
+@app.route('/register')
+def register():
+    form = RegistrationForm()
+    return render_template('register.html', title='Register', form=form)
+
+@app.route('/login')
+def login():
+    form = LoginForm()
+    return render_template('login.html', title='Login', form=form)
 
 # @app.route('/add_new_game', methods=['POST', 'GET'])
 # def add():
