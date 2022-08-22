@@ -6,7 +6,7 @@ print("New Connection Successful")
 
 cursor = connection.cursor()
 
-cursor.execute("CREATE TABLE IF NOT EXISTS Games (name text, release_year integer, age_rating integer, score float, developer text, description text)")
+cursor.execute("CREATE TABLE IF NOT EXISTS Game (name text, release_year integer, age_rating integer, score float, developer text, description text)")
 
 # game_list = [
 #     ("Borderlands", 2009, 18, 90, "Gearbox Software", "Borderlands is an open shooter game with lots of loot"),
@@ -30,7 +30,7 @@ cursor.execute("CREATE TABLE IF NOT EXISTS Games (name text, release_year intege
 
 # cursor = connection.execute('SELECT * FROM users')
 
-for row in cursor.execute("SELECT * FROM Games"):
+for row in cursor.execute("SELECT * FROM Game"):
     print("Name =", row[0])
     print("Release Year =", row[1])
     print("Age Rating =", row[2])
