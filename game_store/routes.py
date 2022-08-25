@@ -1,4 +1,4 @@
-from flask import render_template, url_for, request, g
+from flask import render_template, url_for, request, g, flash, redirect
 from game_store import app
 from game_store.forms import RegistrationForm, LoginForm
 from game_store.models import User, Game
@@ -12,9 +12,12 @@ def home():
 def game_added():
     return render_template('new_game_added.html')
 
-@app.route('/register')
+@app.route('/register', methods=['GET', 'POST'])
 def register():
     form = RegistrationForm()
+    if form.validate_on_submit():
+        flash(f"Acount created for {form.username.data}")
+        return redirect(url_for('home'))
     return render_template('register.html', title='Register', form=form)
 
 @app.route('/login')
