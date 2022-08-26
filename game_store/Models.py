@@ -23,6 +23,7 @@ class Game(db.Model):
     score = db.Column(db.Float, nullable=False)
     developer = db.Column(db.String(60), nullable=False)
     description = db.Column(db.String(255), nullable=False)
+    game_image = db.Column(db.String(20), nullable=False, default='default.jpg')
 
     def __repr__(self):
         return f"Game('{self.name}', {self.release_year}, {self.age_rating}, {self.score}, {self.developer}, {self.description})"

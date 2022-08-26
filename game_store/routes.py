@@ -1,7 +1,7 @@
 from flask import render_template, url_for, request, g, flash, redirect
-from flask_login import login_user, current_user, logout_user
+from flask_login import login_user, current_user, logout_user, login_required
 from game_store import app, db, bcrypt
-from game_store.forms import RegistrationForm, LoginForm
+from game_store.forms import RegistrationForm, LoginForm, UpdateGameForm
 from game_store.models import User, Game
 
 @app.route('/')
@@ -45,6 +45,15 @@ def login():
 def logout():
     logout_user()
     return redirect(url_for('home'))
+
+@app.route('/game')
+@login_required
+def game():
+    form = UpdateGameForm()
+    game_details = Game.query.first()
+    # Later fix the images for each specific game within the databse Game(game.game_iamge) table
+    game_image = url_for('static', filename='game_images/' + 'default.jpg') 
+    return render_template('game.html', title='Game', game_image=game_image, form=form, game_details=game_details)
 
 @app.route('/add_new_game', methods=['POST', 'GET'])
 def add():
