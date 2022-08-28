@@ -1,5 +1,5 @@
 from flask_wtf import FlaskForm
-from wtforms import StringField, PasswordField, SubmitField, BooleanField
+from wtforms import StringField, PasswordField, SubmitField, BooleanField, TextAreaField
 from wtforms.validators import DataRequired, Length, Email, EqualTo, ValidationError
 from game_store.models import User, Game
 
@@ -26,13 +26,22 @@ class LoginForm(FlaskForm):
     remember = BooleanField('Remember Me')
     submit = SubmitField('Login')
 
+class AddGameForm(FlaskForm):
+    name = StringField('Name', validators=[DataRequired()])
+    release_year = StringField('Release Year', validators=[DataRequired()])
+    age_rating = StringField('Age Rating', validators=[DataRequired()])
+    score = StringField('Score', validators=[DataRequired()])
+    developer = StringField('Developer', validators=[DataRequired()])
+    description = TextAreaField('Description', validators=[DataRequired()])
+    add_game = SubmitField('Add Game')
+
 class UpdateGameForm(FlaskForm):
     name = StringField('Name', validators=[DataRequired()])
     release_year = StringField('Release Year', validators=[DataRequired()])
     age_rating = StringField('Age Rating', validators=[DataRequired()])
     score = StringField('Score', validators=[DataRequired()])
     developer = StringField('Developer', validators=[DataRequired()])
-    description = StringField('Description', validators=[DataRequired()]) 
+    description = TextAreaField('Description', validators=[DataRequired()]) 
     update_game = SubmitField('Update')
 
     def validate_name(self, name):
