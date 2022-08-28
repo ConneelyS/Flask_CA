@@ -5,7 +5,7 @@
             <div class="container py-5">
                 <div class="card" style="border-radius: 15px;">
                     <div class="card-body p-4">
-                        <a href="{{ url_for('add') }}">{{ game.name }}</a>
+                        <h1>{{ game.name }}</h1>
                         <br><br>
                         <p> {{ game.description}} </p>
                         <hr class="my-3">
@@ -14,6 +14,7 @@
                             class="text-muted small">{{ game.developer }}</span></p>
                         </div>
                     </div>
+                    <a class="btn btn-primary" href="{{ url_for('game', game_name=game.name)}}" role="button">Edit Game</a>
                 </div>
             </div>
         </section>

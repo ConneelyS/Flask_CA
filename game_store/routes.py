@@ -11,10 +11,6 @@ def view_all_games():
     all_games = Game.query.all()
     return render_template('games_list.html', all_games=all_games)
 
-@app.route('/new_game_added')
-def game_added():
-    return render_template('new_game_added.html')
-
 @app.route('/register', methods=['GET', 'POST'])
 def register():
     if current_user.is_authenticated:
@@ -48,14 +44,16 @@ def logout():
     logout_user()
     return redirect(url_for('view_all_games'))
 
-@app.route('/game')
+@app.route('/game/<string:game_name>')
 @login_required
-def game():
+def game(game_name):
     form = UpdateGameForm()
-    game_details = Game.query.first()
+    game_details = Game.query.all()
+    game = Game.query.get_or_404(game_name)
+
     # Later fix the images for each specific game within the databse Game(game.game_iamge) table
     # game_image = url_for('static', filename='game_images/' + 'default.jpg') 
-    return render_template('game.html', title='Game', form=form, game_details=game_details)
+    return render_template('game.html', title='Game', form=form, game_details=game_details, game=game)
 
 @app.route('/add_new_game', methods=['POST', 'GET'])
 @login_required
@@ -68,12 +66,3 @@ def add():
         flash("New Game Added Successfully", "success")
         return redirect(url_for('view_all_games'))
     return render_template('add_new_game.html', title = 'Add New Game', form=form)
-
-# @app.route('/test_view_games')
-# def test_view_games():
-#     connection = sqlite3.connect("database.db")
-#     connection.row_factory = sqlite3.Row
-#     cur = connection.cursor()
-#     cur.execute("SELECT * FROM Game")
-#     rows = cur.fetchall()
-#     return render_template("test_view_games.html", rows = rows)

@@ -1,75 +1,12 @@
 {% extends "structure.html" %}
 {% block content %}
-    <div class="content-section">
-        <div class="container">
-            <img class="img-fluid" src="{{ game_image }}">
-            <div class="media-body">
-                <br>
-                <!-- Add the name of the game here -->
-                <legend>Game Details</legend>
-            </div>
-        </div>
-
-        <div class="container">
-            <div class="row">
-              <div class="col-2">
-                Name
-              </div>
-              <div class="col">
-                {{ game_details.name }}
-              </div>
-            </div>
-            <div class="row">
-                <div class="col-2">
-                  Release Year
-                </div>
-                <div class="col">
-                  {{ game_details.release_year }}
-                </div>
-              </div>
-              <div class="row">
-                <div class="col-2">
-                  Age Rating
-                </div>
-                <div class="col">
-                  {{ game_details.age_rating }}
-                </div>
-              </div>
-              <div class="row">
-                <div class="col-2">
-                  Score
-                </div>
-                <div class="col">
-                  {{ game_details.score }}
-                </div>
-              </div>
-              <div class="row">
-                <div class="col-2">
-                  Developer
-                </div>
-                <div class="col">
-                  {{ game_details.developer }}
-                </div>
-              </div>
-              <div class="row">
-                <div class="col-2">
-                  Description
-                </div>
-                <div class="col">
-                  {{ game_details.description }}
-                </div>
-              </div>
-          </div>
-
-
-            <!-- SHOW THIS CODE FOR AN UPDATE TO GAME DETAILS OPTION -->
-            <!-- <form method="POST" action="">
+        <div class="content-section">
+            <form method="POST" action="">
                 {{ form.hidden_tag() }}
                 <fieldset class="form-group">
-                    <legend class="border-bottom mb-4">Game Details</legend>
+                    <legend class="border-bottom mb-4">{{ game_details.name }}</legend>
                     <div class="form-group">
                         {{ form.name.label(class="form-control-label") }}
-    
                         {% if form.name.errors %}
                             {{ form.name(class="form-control form-control-lg is-invalid") }}
                             <div class="invalid-feedback">
@@ -81,7 +18,7 @@
                             {{ form.name(class="form-control form-control-lg") }}
                         {% endif %}
                     </div>
-    
+
                     <div class="form-group">
                         {{ form.release_year.label(class="form-control-label") }}
                         {% if form.release_year.errors %}
@@ -95,7 +32,7 @@
                             {{ form.release_year(class="form-control form-control-lg") }}
                         {% endif %}
                     </div>
-    
+
                     <div class="form-group">
                         {{ form.age_rating.label(class="form-control-label") }}
                         {% if form.age_rating.errors %}
@@ -109,7 +46,7 @@
                             {{ form.age_rating(class="form-control form-control-lg") }}
                         {% endif %}
                     </div>
-    
+
                     <div class="form-group">
                         {{ form.score.label(class="form-control-label") }}
                         {% if form.score.errors %}
@@ -151,11 +88,11 @@
                             {{ form.description(class="form-control form-control-lg") }}
                         {% endif %}
                     </div>
+
                 </fieldset>
                 <div class="form-group">
                     {{ form.update_game(class="btn btn-outline-info") }}
                 </div>
             </form>
         </div>
-    </div> -->
 {% endblock content%}
