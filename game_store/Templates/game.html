@@ -1,98 +1,49 @@
 {% extends "structure.html" %}
 {% block content %}
-        <div class="content-section">
-            <form method="POST" action="">
-                {{ form.hidden_tag() }}
-                <fieldset class="form-group">
-                    <legend class="border-bottom mb-4">{{ game_details.name }}</legend>
-                    <div class="form-group">
-                        {{ form.name.label(class="form-control-label") }}
-                        {% if form.name.errors %}
-                            {{ form.name(class="form-control form-control-lg is-invalid") }}
-                            <div class="invalid-feedback">
-                                {% for error in form.name.errors %}
-                                    <span>{{ error }}</span>
-                                {% endfor %}
+        <section>
+            <div class="container py-5">
+                <div class="card" style="border-radius: 15px;">
+                    <div class="card-body p-4">
+                        <h1>{{ game_instance.name }}</h1>
+                        <p> {{ game_instance.description}} </p>
+                        <hr class="my-3">
+                        <div class="d-flex justify-content-start align-items-center">
+                            <div class="col">
+                                <p class="mb-0">Developer: {{ game_instance.developer }}</p>
                             </div>
-                        {% else %}
-                            {{ form.name(class="form-control form-control-lg") }}
-                        {% endif %}
-                    </div>
-
-                    <div class="form-group">
-                        {{ form.release_year.label(class="form-control-label") }}
-                        {% if form.release_year.errors %}
-                            {{ form.release_year(class="form-control form-control-lg is-invalid") }}
-                            <div class="invalid-feedback">
-                                {% for error in form.release_year.errors %}
-                                    <span>{{ error }}</span>
-                                {% endfor %}
+                            <div class="col">
+                                <p class="mb-0">Release Year: {{ game_instance.release_year }}</p>
                             </div>
-                        {% else %}
-                            {{ form.release_year(class="form-control form-control-lg") }}
-                        {% endif %}
-                    </div>
-
-                    <div class="form-group">
-                        {{ form.age_rating.label(class="form-control-label") }}
-                        {% if form.age_rating.errors %}
-                            {{ form.age_rating(class="form-control form-control-lg is-invalid") }}
-                            <div class="invalid-feedback">
-                                {% for error in form.age_rating.errors %}
-                                    <span>{{ error }}</span>
-                                {% endfor %}
+                            <div class="col">
+                                <p class="mb-0">Age Rating: {{ game_instance.age_rating }}</p>
                             </div>
-                        {% else %}
-                            {{ form.age_rating(class="form-control form-control-lg") }}
-                        {% endif %}
-                    </div>
-
-                    <div class="form-group">
-                        {{ form.score.label(class="form-control-label") }}
-                        {% if form.score.errors %}
-                            {{ form.score(class="form-control form-control-lg is-invalid") }}
-                            <div class="invalid-feedback">
-                                {% for error in form.score.errors %}
-                                    <span>{{ error }}</span>
-                                {% endfor %}
+                            <div class="col">
+                                <p class="mb-0">Score: {{ game_instance.score }}/100</p>
                             </div>
-                        {% else %}
-                            {{ form.score(class="form-control form-control-lg") }}
-                        {% endif %}
-                    </div>
-
-                    <div class="form-group">
-                        {{ form.developer.label(class="form-control-label") }}
-                        {% if form.developer.errors %}
-                            {{ form.developer(class="form-control form-control-lg is-invalid") }}
-                            <div class="invalid-feedback">
-                                {% for error in form.developer.errors %}
-                                    <span>{{ error }}</span>
-                                {% endfor %}
-                            </div>
-                        {% else %}
-                            {{ form.developer(class="form-control form-control-lg") }}
-                        {% endif %}
-                    </div>
-
-                    <div class="form-group">
-                        {{ form.description.label(class="form-control-label") }}
-                        {% if form.description.errors %}
-                            {{ form.description(class="form-control form-control-lg is-invalid") }}
-                            <div class="invalid-feedback">
-                                {% for error in form.description.errors %}
-                                    <span>{{ error }}</span>
-                                {% endfor %}
-                            </div>
-                        {% else %}
-                            {{ form.description(class="form-control form-control-lg") }}
-                        {% endif %}
-                    </div>
-
-                </fieldset>
-                <div class="form-group">
-                    {{ form.update_game(class="btn btn-outline-info") }}
+                        </div>
+                        <div>
+                            <br>
+                            <a class="btn btn-secondary" href="{{ url_for('update_game', game_id=game_instance.id)}}">Update Game</a>
+                            <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#delete_modal">Delete Game</button>
+                        </div>
+            </div>
+        </section>
+        <div class="modal fade" id="delete_modal" tabindex="-1" role="dialog" aria-labelledby="edelete_modal_label" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                <h5 class="modal-title" id="delete_modal_label">Are You Sure You Want To Delete {{ game_instance.name }}?</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
                 </div>
-            </form>
+                <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <form action="{{ url_for('delete_game', game_id=game_instance.id)}}" method="POST">
+                    <input class="btn btn-danger" type="submit" value="Delete">
+                </form>
+                </div>
+            </div>
+            </div>
         </div>
 {% endblock content%}

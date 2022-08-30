@@ -1,5 +1,5 @@
 from flask_wtf import FlaskForm
-from wtforms import StringField, PasswordField, SubmitField, BooleanField, TextAreaField
+from wtforms import StringField, PasswordField, SubmitField, TextAreaField
 from wtforms.validators import DataRequired, Length, Email, EqualTo, ValidationError
 from game_store.models import User, Game
 
@@ -23,7 +23,6 @@ class RegistrationForm(FlaskForm):
 class LoginForm(FlaskForm):
     email = StringField('Email', validators=[DataRequired(), Email()])
     password = PasswordField('Password', validators=[DataRequired(), Length(min=8)])
-    remember = BooleanField('Remember Me')
     submit = SubmitField('Login')
 
 class AddGameForm(FlaskForm):
@@ -33,7 +32,7 @@ class AddGameForm(FlaskForm):
     score = StringField('Score', validators=[DataRequired()])
     developer = StringField('Developer', validators=[DataRequired()])
     description = TextAreaField('Description', validators=[DataRequired()])
-    add_game = SubmitField('Add Game')
+    add_game = SubmitField('Add')
 
 class UpdateGameForm(FlaskForm):
     name = StringField('Name', validators=[DataRequired()])
@@ -41,11 +40,5 @@ class UpdateGameForm(FlaskForm):
     age_rating = StringField('Age Rating', validators=[DataRequired()])
     score = StringField('Score', validators=[DataRequired()])
     developer = StringField('Developer', validators=[DataRequired()])
-    description = TextAreaField('Description', validators=[DataRequired()]) 
-    update_game = SubmitField('Update')
-
-    def validate_name(self, name):
-        # changed_name = name.data
-        game = Game.query.filter_by(name=name.data).first()
-        if game == game:
-            raise ValidationError("Game Already Exists")
+    description = TextAreaField('Description', validators=[DataRequired()])
+    add_game = SubmitField('Update')
