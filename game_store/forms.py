@@ -42,3 +42,7 @@ class UpdateGameForm(FlaskForm):
     developer = StringField('Developer', validators=[DataRequired()])
     description = TextAreaField('Description', validators=[DataRequired()])
     add_game = SubmitField('Update')
+
+class SearchForm(FlaskForm):
+    searched = StringField('Searched', validators=[DataRequired()])
+    search = SubmitField('Search')

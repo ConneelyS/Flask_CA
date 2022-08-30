@@ -1,7 +1,7 @@
 from flask import render_template, url_for, flash, redirect, request
 from flask_login import login_user, current_user, logout_user, login_required
 from game_store import app, db, bcrypt
-from game_store.forms import RegistrationForm, LoginForm, UpdateGameForm, AddGameForm
+from game_store.forms import RegistrationForm, LoginForm, UpdateGameForm, AddGameForm, SearchForm
 from game_store.models import User, Game
 
 @app.route('/')
@@ -134,3 +134,22 @@ def delete_game(game_id):
     db.session.commit()
     flash('Game deleted', 'success')
     return redirect(url_for('view_all_games'))
+
+
+# Search Bar Functionality
+@app.context_processor
+def search_data():
+    form = SearchForm()
+    return dict(form=form)
+
+@app.route('/search', methods=['POST'])
+def search():
+    form = SearchForm()
+    games = Game.query
+    if form.validate_on_submit():
+        searched_game = form.searched.data
+        games = games.filter(Game.name.like('%' + searched_game + '%'))
+        games = games.order_by(Game.name).all()
+        return render_template('search.html', form=form, searched=searched_game, games=games)
+    else:
+        return render_template('search_error.html')
